@@ -18,15 +18,16 @@ pkg update -y && pkg upgrade -y
 
 # 2. Installation des dependances systeme
 echo "[2/5] Installation de Python et dependances..."
-pkg install -y python python-pip git
+pkg install -y python python-pip git cmake ninja patchelf
 
-# 3. Installer les bibliotheques scientifiques via Termux (pre-compilees pour ARM)
-echo "[3/5] Installation des bibliotheques scientifiques..."
-pkg install -y libopenblas libandroid-execinfo python-numpy python-pandas python-scikit-learn
+# 3. Installer les bibliotheques de compilation pour ARM
+echo "[3/5] Installation des bibliotheques de compilation..."
+pkg install -y libopenblas libandroid-execinfo
 
-# 4. Installation des paquets Python manquants
-echo "[4/5] Installation des paquets Python restants..."
-pip install requests
+# 4. Installation des paquets Python via pip
+echo "[4/5] Installation des paquets Python (peut prendre quelques minutes)..."
+# IMPORTANT: ne PAS faire "pip install --upgrade pip" sur Termux (casse le paquet)
+pip install numpy pandas requests scikit-learn
 
 # 5. Creation du dossier de donnees
 echo "[5/5] Preparation..."
