@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Terminal colors -->
+    <color name="terminal_bg">#FF0A0A0A</color>
+    <color name="terminal_input_bg">#FF141414</color>
+    <color name="terminal_text">#FFE0E0E0</color>
+    <color name="terminal_prompt">#FF00FFCC</color>
+    <color name="terminal_accent">#FF00FFCC</color>
+    <color name="terminal_hint">#FF555555</color>
+    <color name="terminal_error">#FFFF4444</color>
+    <color name="terminal_success">#FF00CC66</color>
+    <color name="terminal_warning">#FFFFAA00</color>
+    <color name="terminal_info">#FF4499FF</color>
+
+    <!-- App theme colors -->
+    <color name="primary">#FF00FFCC</color>
+    <color name="primary_dark">#FF0A0A0A</color>
+    <color name="status_bar">#FF050505</color>
+</resources>
