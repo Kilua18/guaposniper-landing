@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuapoSniper Fight Lab - Analyse en cours</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- NAV -->
+        <nav class="app-nav">
+            <a href="index.html" class="logo" style="text-decoration:none;color:inherit;">
+                GUAPOSNIPER <span class="accent">FIGHT LAB</span>
+            </a>
+            <div class="nav-status">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">En attente</span>
+            </div>
+        </nav>
+
+        <main class="app-main">
+            <!-- MODE SELECTOR -->
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="live" id="modeLive">Camera en direct</button>
+                <button class="mode-btn" data-mode="upload" id="modeUpload">Importer une video</button>
+            </div>
+
+            <!-- VIDEO AREA -->
+            <div class="video-area" id="videoArea">
+                <video id="videoElement" autoplay playsinline muted></video>
+                <canvas id="overlayCanvas"></canvas>
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <div class="placeholder-icon">&#x1F3AC;</div>
+                    <p>Clique sur "Demarrer la camera" pour commencer</p>
+                </div>
+                <div class="loading-overlay hidden" id="loadingOverlay">
+                    <div class="spinner"></div>
+                    <p id="loadingText">Chargement du modele IA...</p>
+                </div>
+            </div>
+
+            <!-- UPLOAD AREA (hidden by default) -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">&#x1F4C1;</div>
+                <p><strong>Glisse ta video ici</strong> ou clique pour parcourir</p>
+                <p style="font-size:0.8rem; margin-top:8px;">Formats supportes : MP4, MOV, WebM</p>
+                <input type="file" id="fileInput" accept="video/*">
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="controls" id="liveControls">
+                <button class="control-btn" id="btnStartCamera">&#x1F4F7; Demarrer la camera</button>
+                <button class="control-btn" id="btnStartAnalysis" disabled>&#x1F9E0; Lancer l'analyse</button>
+                <button class="control-btn" id="btnStopAnalysis" disabled>&#x23F9; Arreter</button>
+            </div>
+
+            <div class="controls hidden" id="uploadControls">
+                <button class="control-btn" id="btnAnalyzeVideo" disabled>&#x1F9E0; Analyser la video</button>
+                <button class="control-btn" id="btnStopUploadAnalysis" disabled>&#x23F9; Arreter</button>
+            </div>
+
+            <!-- ANALYSIS PANEL -->
+            <div class="analysis-panel" id="analysisPanel">
+                <div class="analysis-header">
+                    <h2>Analyse <span class="accent">en temps reel</span></h2>
+                    <div class="global-score">
+                        <div class="score-circle medium" id="scoreCircle">--</div>
+                        <div class="score-label">
+                            <strong id="scoreLabel">En attente</strong>
+                            Score technique
+                        </div>
+                    </div>
+                </div>
+
+                <div class="defects-grid" id="defectsGrid">
+                    <!-- Garde -->
+                    <div class="defect-card" id="cardGuard">
+                        <h4>&#x1F94A; Garde <span class="defect-status" id="statusGuard">--</span></h4>
+                        <p id="msgGuard">En attente d'analyse...</p>
+                        <div class="defect-meter">
+                            <div class="defect-meter-fill" id="meterGuard" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Stance -->
+                    <div class="defect-card" id="cardStance">
+                        <h4>&#x1F9CD; Stance <span class="defect-status" id="statusStance">--</span></h4>
+                        <p id="msgStance">En attente d'analyse...</p>
+                        <div class="defect-meter">
+                            <div class="defect-meter-fill" id="meterStance" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Hip Rotation -->
+                    <div class="defect-card" id="cardHips">
+                        <h4>&#x1F504; Rotation hanches <span class="defect-status" id="statusHips">--</span></h4>
+                        <p id="msgHips">En attente d'analyse...</p>
+                        <div class="defect-meter">
+                            <div class="defect-meter-fill" id="meterHips" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Elbows -->
+                    <div class="defect-card" id="cardElbows">
+                        <h4>&#x1F6E1; Coudes <span class="defect-status" id="statusElbows">--</span></h4>
+                        <p id="msgElbows">En attente d'analyse...</p>
+                        <div class="defect-meter">
+                            <div class="defect-meter-fill" id="meterElbows" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Balance -->
+                    <div class="defect-card" id="cardBalance">
+                        <h4>&#x269A; Equilibre <span class="defect-status" id="statusBalance">--</span></h4>
+                        <p id="msgBalance">En attente d'analyse...</p>
+                        <div class="defect-meter">
+                            <div class="defect-meter-fill" id="meterBalance" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Guard Return -->
+                    <div class="defect-card" id="cardReturn">
+                        <h4>&#x21A9; Retour en garde <span class="defect-status" id="statusReturn">--</span></h4>
+                        <p id="msgReturn">En attente d'analyse...</p>
+                        <div class="defect-meter">
+                            <div class="defect-meter-fill" id="meterReturn" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIPS -->
+                <div class="tips-section" id="tipsSection">
+                    <h3>&#x1F4A1; Conseils personnalises</h3>
+                    <div id="tipsList">
+                        <div class="tip-item">
+                            <div class="tip-icon">&#x2139;</div>
+                            <div class="tip-text">Lance l'analyse pour recevoir des conseils personnalises en fonction de ta technique.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>GuapoSniper Fight Lab &copy; 2026 - Propulse par MediaPipe Pose AI</p>
+        </footer>
+    </div>
+
+    <!-- MediaPipe Pose via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+
+    <script src="js/analyzer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
