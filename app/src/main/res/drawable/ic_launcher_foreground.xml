@@ -12,11 +12,10 @@
 
     <!-- Terminal bracket > -->
     <path
-        android:fillColor="#00FFCC"
+        android:fillColor="#00000000"
         android:pathData="M35,38L50,54L35,70"
         android:strokeWidth="4"
-        android:strokeColor="#00FFCC"
-        android:fillColor="#00000000" />
+        android:strokeColor="#00FFCC" />
 
     <!-- Cursor line _ -->
     <path
