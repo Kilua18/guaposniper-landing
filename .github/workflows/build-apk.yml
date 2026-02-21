@@ -28,8 +28,8 @@ jobs:
 
       - name: Install SDK components
         run: |
+          yes | sdkmanager --licenses || true
           sdkmanager --install "platforms;android-34" "build-tools;34.0.0" "platform-tools"
-          sdkmanager --licenses <<< "$(yes)"
 
       - name: Verify SDK setup
         run: |
@@ -42,7 +42,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --no-daemon --info 2>&1 | tail -200
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
