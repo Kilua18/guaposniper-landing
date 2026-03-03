@@ -1,0 +1,25 @@
+[Unit]
+Description=GuapoTrader - Crypto Scalping Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/guapo-trader
+ExecStart=/home/pi/guapo-trader/venv/bin/python -m guapo_trader.main
+Restart=always
+RestartSec=30
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+# Sécurité
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/pi/guapo-trader/data /home/pi/guapo-trader/logs
+
+# Environnement
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

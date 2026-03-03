@@ -1,0 +1,21 @@
+# Config avec clés API
+config.yaml
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+
+# Données
+data/
+logs/
+*.db
+
+# IDE
+.vscode/
+.idea/

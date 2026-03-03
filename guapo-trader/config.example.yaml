@@ -1,0 +1,75 @@
+# ============================================
+# GuapoTrader - Configuration
+# Copie ce fichier: cp config.example.yaml config.yaml
+# Remplis avec tes vraies clés API
+# ============================================
+
+# --- Binance ---
+binance:
+  api_key: "TA_CLE_API_BINANCE"
+  api_secret: "TON_SECRET_API_BINANCE"
+  testnet: true  # true = mode test (pas d'argent réel), false = réel
+
+# --- Solana / Phantom ---
+solana:
+  rpc_url: "https://api.mainnet-beta.solana.com"
+  private_key: "TA_CLE_PRIVEE_PHANTOM"  # Exporter depuis Phantom
+  slippage_bps: 100  # Slippage en basis points (100 = 1%)
+
+# --- Stratégie de Scalping ---
+strategy:
+  # Paires à trader sur Binance
+  binance_pairs:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "SOL/USDT"
+
+  # Tokens Solana à trader (adresses mint)
+  solana_tokens: []
+
+  # Timeframe pour l'analyse
+  timeframe: "5m"  # 1m, 3m, 5m, 15m
+
+  # Indicateurs
+  rsi_period: 14
+  rsi_oversold: 30      # Acheter quand RSI < 30
+  rsi_overbought: 70    # Vendre quand RSI > 70
+  ema_fast: 9
+  ema_slow: 21
+  bb_period: 20
+  bb_std: 2.0
+
+  # Seuils de profit
+  take_profit_pct: 0.5   # Prendre le profit à +0.5%
+  stop_loss_pct: 0.3     # Stop loss à -0.3%
+
+  # Intervalle entre les scans (secondes)
+  scan_interval: 30
+
+# --- Gestion des Risques ---
+risk:
+  max_position_usdt: 20.0      # Max par trade en USDT
+  max_open_trades: 3            # Max de trades ouverts en même temps
+  max_daily_loss_usdt: 10.0     # Perte max par jour avant arrêt
+  max_daily_trades: 50          # Nombre max de trades par jour
+  cooldown_after_loss: 120      # Pause en secondes après une perte
+
+# --- Notifications Telegram ---
+telegram:
+  enabled: true
+  bot_token: "TON_TOKEN_BOT_TELEGRAM"
+  chat_id: "TON_CHAT_ID"
+  notify_trades: true       # Notifier chaque trade
+  notify_daily_report: true # Rapport quotidien
+  daily_report_hour: 22     # Heure du rapport (22h)
+
+# --- Base de données ---
+database:
+  path: "data/trades.db"
+
+# --- Logging ---
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/guapo-trader.log"
+  max_size: "10 MB"
+  retention: "7 days"
